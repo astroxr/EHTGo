@@ -1,4 +1,6 @@
 *~
+*.apk
+.gradle/
 
 # =============== #
 # Unity generated #
