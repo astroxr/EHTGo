@@ -25,8 +25,8 @@ public class PinchZoom : MonoBehaviour
             Debug.Log("Touched one finger!");
             if (vHit.transform.tag == "TelescopePin")
             {
-
-                GameObject Telescope_Container = GameObject.Find("Earth_NewModel2");
+                GameObject Telescope_Container = GameObject.FindWithTag("Earth");
+                // GameObject Telescope_Container = GameObject.Find("Earth_NewModel2");
                 Load_TelescopeData script = Telescope_Container.GetComponent<Load_TelescopeData>();
 
                 GameObject Selected_Telescope = vHit.transform.gameObject;
