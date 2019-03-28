@@ -25,7 +25,9 @@ public class ChangeSlide : MonoBehaviour
     public Sprite space2;
 
     public Sprite xSprite, downSprite;
-    public Button NextButton, PrevButton, OpenCloseButton;
+    public Button NextButton, PrevButton, CloseButton, OpenButton;
+
+    public Vector3 transformVector = new Vector3(5000, 2300, 0);
     
     // Start is called before the first frame update
     void Start()
@@ -38,9 +40,12 @@ public class ChangeSlide : MonoBehaviour
 
         assignText(slideNumber);
 
+        OpenButton.transform.Translate(transformVector); //Start open button off-screen
+
         NextButton.onClick.AddListener(Next);
         PrevButton.onClick.AddListener(Prev);
-        OpenCloseButton.onClick.AddListener(toggleSlides);
+        CloseButton.onClick.AddListener(toggleSlides);
+        OpenButton.onClick.AddListener(toggleSlides);
     }
 
     //Next slash right button
@@ -73,24 +78,26 @@ public class ChangeSlide : MonoBehaviour
         slideNumber = ID;
         assignText(slideNumber);
 
-        //One vector for almost all transformations
-        Vector3 openVector = new Vector3(-2000, -900, 0);
-        OpenCloseButton.image.sprite = xSprite; //Change button image
+        if (!slidesOpen) //Just in case you select a new pin while everything is open, so it doesn't drift off the screen
+        {
+            //One vector for almost all transformations
+            Vector3 openVector = -transformVector;
 
-        //Move everything
-        holoSlide.transform.Translate(openVector);
-        telescopeName.transform.Translate(openVector);
-        telescopeLocation.transform.Translate(openVector);
-        telescopeImage.transform.Translate(openVector);
-        NextButton.transform.Translate(openVector);
-        PrevButton.transform.Translate(openVector);
-        OpenCloseButton.transform.Translate(new Vector3(-100,-100,0)); //Button moves relative to slide
+            //Move everything
+            holoSlide.transform.Translate(openVector);
+            telescopeName.transform.Translate(openVector);
+            telescopeLocation.transform.Translate(openVector);
+            telescopeImage.transform.Translate(openVector);
+            NextButton.transform.Translate(openVector);
+            PrevButton.transform.Translate(openVector);
+            CloseButton.transform.Translate(openVector);
+            OpenButton.transform.Translate(-openVector); //Move other button off screen
+        }
     }
     void closeSlides()
     {
         //One vector for most transformations
-        Vector3 closeVector = new Vector3(2000, 900, 0);
-        OpenCloseButton.image.sprite = downSprite; //Change button image
+        Vector3 closeVector = transformVector;
 
         //Move everything
         holoSlide.transform.Translate(closeVector);
@@ -99,7 +106,8 @@ public class ChangeSlide : MonoBehaviour
         telescopeImage.transform.Translate(closeVector);
         NextButton.transform.Translate(closeVector);
         PrevButton.transform.Translate(closeVector);
-        OpenCloseButton.transform.Translate(new Vector3(100,100, 0)); //Button moves relative to slide
+        CloseButton.transform.Translate(closeVector);
+        OpenButton.transform.Translate(-closeVector); //Move other button onto screen
     } 
     void toggleSlides()
     {
