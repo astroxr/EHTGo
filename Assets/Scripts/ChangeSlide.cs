@@ -10,14 +10,17 @@ public class ChangeSlide : MonoBehaviour
     public string location;
     public string[] nameArray = new string[11];
     public string[] locArray = new string[11];
+    public string[] descrArray = new string[11];
     public Sprite[] imageArray = new Sprite[11];
     public string namePath;
     public string locPath;
+    public string descrPath;
     public int slideNumber; //Starts at 0
     public int totalSlides;
     public bool slidesOpen; 
     public Text telescopeName;
     public Text telescopeLocation;
+    public Text telescopeDescription;
     public Image telescopeImage;
     public Image holoSlide;
 
@@ -28,14 +31,26 @@ public class ChangeSlide : MonoBehaviour
     public Button NextButton, PrevButton, CloseButton, OpenButton;
 
     public Vector3 transformVector = new Vector3(5000, 2300, 0);
-    
-    // Start is called before the first frame update
-    void Start()
+
+    public TextAsset namesList;
+    public TextAsset locsList;
+    public TextAsset descrList;
+
+// Start is called before the first frame update
+void Start()
     {
         slidesOpen = true;
         totalSlides = 11;
         slideNumber = 0;
 
+        namePath = "Names";
+        locPath = "Locations";
+        descrPath = "Descriptions";
+        namesList = Resources.Load<TextAsset>(namePath) as TextAsset;
+        locsList = Resources.Load<TextAsset>(locPath) as TextAsset;
+        descrList = Resources.Load<TextAsset>(descrPath) as TextAsset;
+        Debug.Log(locsList);
+        Debug.Log(descrList);
         initArrays();
 
         assignText(slideNumber);
@@ -46,6 +61,7 @@ public class ChangeSlide : MonoBehaviour
         PrevButton.onClick.AddListener(Prev);
         CloseButton.onClick.AddListener(toggleSlides);
         OpenButton.onClick.AddListener(toggleSlides);
+        
     }
 
     //Next slash right button
@@ -59,6 +75,7 @@ public class ChangeSlide : MonoBehaviour
             slideNumber = 0;
         }
         assignText(slideNumber);
+
     }
     //Previous slash left button
     void Prev()
@@ -87,6 +104,7 @@ public class ChangeSlide : MonoBehaviour
             holoSlide.transform.Translate(openVector);
             telescopeName.transform.Translate(openVector);
             telescopeLocation.transform.Translate(openVector);
+            telescopeDescription.transform.Translate(openVector);
             telescopeImage.transform.Translate(openVector);
             NextButton.transform.Translate(openVector);
             PrevButton.transform.Translate(openVector);
@@ -103,6 +121,7 @@ public class ChangeSlide : MonoBehaviour
         holoSlide.transform.Translate(closeVector);
         telescopeName.transform.Translate(closeVector);
         telescopeLocation.transform.Translate(closeVector);
+        telescopeDescription.transform.Translate(closeVector);
         telescopeImage.transform.Translate(closeVector);
         NextButton.transform.Translate(closeVector);
         PrevButton.transform.Translate(closeVector);
@@ -125,17 +144,16 @@ public class ChangeSlide : MonoBehaviour
     {
         telescopeName.text =  nameArray[ID];
         telescopeLocation.text = locArray[ID];
+        telescopeDescription.text = descrArray[ID];
         telescopeImage.sprite = imageArray[ID]; //This works
     }
     void initArrays()
     {
-        namePath = "Names";
-        locPath = "Locations";
-        //space1 = Resources.Load<Sprite>("Space1") as Sprite; //This does not
-        TextAsset namesList = Resources.Load<TextAsset>(namePath) as TextAsset;
-        TextAsset locsList = Resources.Load<TextAsset>(locPath) as TextAsset;
         char[] charArray = { '\n' };
         nameArray = namesList.text.Split(charArray, 11);
         locArray = locsList.text.Split(charArray, 11);
+        Debug.Log("---------");
+        Debug.Log(descrList);
+        descrArray = descrList.text.Split(charArray, 11);
     }
 }
