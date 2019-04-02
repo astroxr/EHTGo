@@ -1,4 +1,4 @@
-Arizona Radio Observatory / Submillimeter-wave Astronomy (ARO/SMT)
+﻿Arizona Radio Observatory / Submillimeter-wave Astronomy (ARO/SMT)
 Atacama Pathfinder EXperiment (APEX)
 IRAM 30-Meter Telescope
 James Clerk Maxwell Telescope (JCMT)
