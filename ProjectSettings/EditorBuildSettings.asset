@@ -6,12 +6,21 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
-  - enabled: 0
     path: Assets/Scenes/OrigSample.unity
     guid: cd006f24eae524412ba104fc9a4611ad
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/JoseARScene.unity
     guid: 2f9aa0b1e75a866d98607c56b986360b
+  - enabled: 0
+    path: Assets/Scenes/TelescopeSlides.unity
+    guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/Scenes/ARComb.unity
+    guid: 6abaa17b27fb0e3889d907d703df2bcb
+  - enabled: 0
+    path: Assets/Scenes/JTest.unity
+    guid: 2de39a26156f26f958733c29b30324d2
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
   m_configObjects: {}
