@@ -18,13 +18,13 @@ public class Load_TelescopeData : MonoBehaviour
     public Material Selected;
 
     Vector3[] positionArray = new[] { new Vector3(5088967.9000f, - 301681.6000f, 3825015.8000f),
-        new Vector3(-1828796.200f, -5054406.800f, 3427865.200f),
-    new Vector3(-5464523.400f,-2493147.080f,2150611.750f),
-    new Vector3(-768713.9637f,-5988541.7982f,2063275.9472f),
-    new Vector3(2225061.164f,-5440057.37f,-2481681.15f),
-    new Vector3(0.01f,0.01f,-6359609.7f),
-    new Vector3(2225039.53f,-5441197.63f,-2479303.36f),
-    new Vector3(-5464584.68f,-2493001.17f,2150653.98f)};
+                                        new Vector3(-1828796.200f, -5054406.800f, 3427865.200f),
+                                        new Vector3(-5464523.400f,-2493147.080f,2150611.750f),
+                                        new Vector3(-768713.9637f,-5988541.7982f,2063275.9472f),
+                                        new Vector3(2225061.164f,-5440057.37f,-2481681.15f),
+                                        new Vector3(0.01f,0.01f,-6359609.7f),
+                                        new Vector3(2225039.53f,-5441197.63f,-2479303.36f),
+                                        new Vector3(-5464584.68f,-2493001.17f,2150653.98f)};
 
     string[] Tel_Names = new[] { "PV", "SMT", "SMA", "LMT", "ALMA", "SPT", "APEX", "JCMT" };
 
@@ -34,6 +34,9 @@ public class Load_TelescopeData : MonoBehaviour
         
         //StreamReader inp_stm = new StreamReader(".\\Assets\\Earth\\Materials\\Materials\\Telescope_Coordinates\\Data.txt");
         Transform TelescopeContainer = transform.Find("TelescopePinContainer");
+        float LocalRadius = transform.Find("Earth").gameObject.GetComponent<SphereCollider>().radius;
+        // float LocalRadius = GameObject.FindWithTag("EarthCollider").GetComponent<SphereCollider>().radius;
+
         //while (!inp_stm.EndOfStream)
         int array_index = 0;
         int NumberofPins = 8;
@@ -51,7 +54,8 @@ public class Load_TelescopeData : MonoBehaviour
             float y = positionArray[array_index].y;
             float z = positionArray[array_index].z;
             Vector3 Telescope_pin_location = new Vector3(x, z, y);
-            Telescope_pin_location = Telescope_pin_location.normalized*distance;
+            //Telescope_pin_location = Telescope_pin_location.normalized*distance;
+            Telescope_pin_location = Telescope_pin_location.normalized*LocalRadius;
 
             //Instantiate(Telescope_Prefab, Telescope_pin_location, new Quaternion(0, 0, 0, 0),);
             //GameObject sphere = Instantiate(Pin_object, new Vector3(0, 0, 0), Quaternion.identity);
@@ -63,12 +67,17 @@ public class Load_TelescopeData : MonoBehaviour
             //BoxCollider sc = sphere.AddComponent<BoxCollider>();
             
             p.ID = array_index;
-            sphere.transform.tag = "TelescopePin";
             
+            // var pp = sphere.AddComponent<SelectTelescope>();
+            // pp.ID = array_index;
+            // pp.m_NotSelected = Not_selected;
+            // pp.m_Selected = Selected;
+            
+            sphere.transform.tag = "TelescopePin";
 
-
-            sphere.transform.localScale = new Vector3(1, 1, 1) * scale_;
-            //sphere.name = splited[0];
+            // sphere.transform.localScale = new Vector3(1, 1, 1) * scale_;
+            sphere.transform.localScale = new Vector3(1, 1, 1) * LocalRadius/10;
+            // sphere.name = splited[0];
             sphere.name = Tel_Names[array_index];
             CurrentTelescopes[array_index] = sphere;
             array_index++;
@@ -81,15 +90,13 @@ public class Load_TelescopeData : MonoBehaviour
 
     public void Select_Telescope (int ID)
     {
+        Debug.Log("Selecting Telescope. ID=" + ID);
+
         foreach (GameObject i in this.CurrentTelescopes)
         {
             i.GetComponent<Renderer>().material = Not_selected;
         }
-        if (ID < 0)
-        {
-            return;
-        }
-        else
+        if (ID >= 0)
         {
             CurrentTelescopes[ID].GetComponent<Renderer>().material = Selected;
         }
