@@ -30,7 +30,7 @@ public class ChangeSlide : MonoBehaviour
     public Sprite xSprite, downSprite;
     public Button NextButton, PrevButton, CloseButton, OpenButton;
 
-    public Vector3 transformVector = new Vector3(5000, 2300, 0);
+    public Vector3 transformVector = new Vector3(4 * Screen.width, 4 * Screen.height, 0);
 
     public TextAsset namesList;
     public TextAsset locsList;
@@ -49,8 +49,6 @@ void Start()
         namesList = Resources.Load<TextAsset>(namePath) as TextAsset;
         locsList = Resources.Load<TextAsset>(locPath) as TextAsset;
         descrList = Resources.Load<TextAsset>(descrPath) as TextAsset;
-        Debug.Log(locsList);
-        Debug.Log(descrList);
         initArrays();
 
         assignText(slideNumber);
@@ -152,8 +150,6 @@ void Start()
         char[] charArray = { '\n' };
         nameArray = namesList.text.Split(charArray, 11);
         locArray = locsList.text.Split(charArray, 11);
-        Debug.Log("---------");
-        Debug.Log(descrList);
         descrArray = descrList.text.Split(charArray, 11);
     }
 }
