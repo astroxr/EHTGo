@@ -25,11 +25,13 @@ public class PinchSelect : MonoBehaviour
 
     private void OnEnable() {
         EventManager.OnSelected += ProcessSelected;
+        EventManager.OnSelectMouse += ProcessSelected;
         EventManager.OnPinched += ProcessPinch;
     }
 
     private void OnDisable() {
         EventManager.OnSelected -= ProcessSelected;
+        EventManager.OnSelectMouse -= ProcessSelected;
         EventManager.OnPinched -= ProcessPinch;
     }
 
@@ -38,6 +40,32 @@ public class PinchSelect : MonoBehaviour
 
         // The ray to the touched object in the world
         Ray ray = Camera.main.ScreenPointToRay(touch.position);
+
+        // Your raycast handling
+        RaycastHit vHit;
+        
+        Debug.DrawRay(ray.origin, 10*ray.direction, Color.yellow);
+        if (Physics.Raycast(ray,  out vHit, Mathf.Infinity, telescopeLayers))
+        {
+            if (vHit.transform.tag == "TelescopePin")
+            {
+                // GameObject Telescope_Container = GameObject.FindWithTag("Earth");
+                // GameObject Telescope_Container = GameObject.Find("Earth_NewModel2");
+                Load_TelescopeData script = GetComponent<Load_TelescopeData>();
+
+                GameObject Selected_Telescope = vHit.transform.gameObject;
+                PinScript script_2 = Selected_Telescope.GetComponent<PinScript>();
+
+                script.Select_Telescope(script_2.ID);
+            }
+        }
+    }
+
+    void ProcessSelected(Vector2 position){
+        int telescopeLayers = 1 << LayerMask.NameToLayer("TelescopePins");
+
+        // The ray to the touched object in the world
+        Ray ray = Camera.main.ScreenPointToRay(position);
 
         // Your raycast handling
         RaycastHit vHit;

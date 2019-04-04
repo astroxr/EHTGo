@@ -1,16 +1,23 @@
 fileFormatVersion: 2
 guid: 909205d37252b4331ab7f1659f855906
+labels:
+- Terrain
 ModelImporter:
   serializedVersion: 23
   fileIDToRecycleName:
     100000: //RootNode
+    100002: Grid
     400000: //RootNode
+    400002: Grid
     2100000: atacama_cm.001
     2100002: atacama_bot.001
     2300000: //RootNode
+    2300002: Grid
     3300000: //RootNode
+    3300002: Grid
     4300000: Grid
     6400000: //RootNode
+    6400002: Grid
   externalObjects:
   - first:
       type: UnityEngine:Material
@@ -66,7 +73,7 @@ ModelImporter:
     optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
-    preserveHierarchy: 0
+    preserveHierarchy: 1
     indexFormat: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001

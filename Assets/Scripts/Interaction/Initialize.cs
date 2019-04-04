@@ -2,17 +2,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Experimental.XR;
 using UnityEngine.XR.ARFoundation;
+using UnityEngine.EventSystems;
+using System;
+
 
 [RequireComponent(typeof(ARSessionOrigin))]
-[RequireComponent(typeof(ARReferencePointManager))]
 [RequireComponent(typeof(ARPlaneManager))]
-public class Initialize : MonoBehaviour {
+public class Initialize : MonoBehaviour, IPointerClickHandler {
     [SerializeField]
     [Tooltip("Instantiates this prefab on a plane at the touch location.")]
     GameObject m_PlacedPrefab;
+    [SerializeField]
+    [Tooltip("Scale used to start up the application. This will affect the size of objects")]
+    public float startingScale;
     ARSessionOrigin m_SessionOrigin;
     ARPlaneManager m_ARPlaneManager;
-    ARReferencePointManager m_RefPointManager;
     /// <summary>
     /// The prefab to instantiate on touch.
     /// </summary>
@@ -29,65 +33,26 @@ public class Initialize : MonoBehaviour {
     static List<ARPlane> allPlanes = new List<ARPlane>();
 
     void Awake()
-    {
+    {   
         m_SessionOrigin = GetComponent<ARSessionOrigin>();
         m_ARPlaneManager = GetComponent<ARPlaneManager>();
-        // m_RefPointManager = GetComponent<ARReferencePointManager>();
     }
     private void Start() {
-        
+        startingScale = 10f;
+        transform.localScale = new Vector3(startingScale, startingScale, startingScale);
     }
-    private void Update() {
-        // if ((spawnedObject != null) || Input.touchCount == 0)
-        //     return;
 
-        if (Input.touchCount == 0 || Input.GetTouch(0).phase != TouchPhase.Began)
-            return;
-
-        Debug.Log("Touched Screen!");
-
-        var hitsomething = m_SessionOrigin.Raycast(Input.GetTouch(0).position, s_Hits, TrackableType.Planes);
-
-        Debug.Log("Sent RayCast!");
-
-        if (hitsomething)
-            Debug.Log("RayCast hit a plane! INFO:");
-        else
-        {
-            Debug.Log("RayCast hit nothing!");
-            return;
-        }
-
-        // if (!m_SessionOrigin.Raycast(Input.GetTouch(0).position, s_Hits, TrackableType.Planes))
-        //     return;
-
-        var hit = s_Hits[0];
-
-        Debug.Log("Position: " + hit.pose);
-
-        // var plane = m_ARPlaneManager.TryGetPlane(hit.trackableId);
-        // if (plane == null)
-        //     return;
-
-        if (spawnedObject == null)
-        {
-            // spawnedObject = Instantiate(m_PlacedPrefab, hit.pose.position, hit.pose.rotation);
-
+    private void instantiatePrefab(PointerEventData eventData){
+        
+        if (m_SessionOrigin.Raycast(Input.GetTouch(0).position, s_Hits, TrackableType.Planes)){
+            var hit = s_Hits[0];
             spawnedObject = Instantiate(m_PlacedPrefab);
             // Position at one meter above the ground.
-            m_SessionOrigin.MakeContentAppearAt(spawnedObject.transform, hit.pose.position + Vector3.up, hit.pose.rotation);
+            var offset = startingScale * Vector3.up;
+            m_SessionOrigin.MakeContentAppearAt(spawnedObject.transform, hit.pose.position + offset, hit.pose.rotation);
             SetAllPlanesActive(false);
         }
-
-        // var planeNormal = plane.transform.up;
-        // var refPoint = m_RefPointManager.TryAttachReferencePoint(plane, hit.pose.position + planeNormal + 1*Vector3.up, hit.pose.rotation);
-        // spawnedObject = Instantiate(m_PlacedPrefab, hit.pose.position, hit.pose.rotation);
-        // spawnedObject.transform.SetParent(refPoint.transform);
-        // m_ARPlaneManager.planePrefab = null ;
-
-        // TogglePlaneDetection();
     }
-    
     
     /// <summary>
     /// Toggles plane detection and the visualization of the planes.
@@ -116,5 +81,9 @@ public class Initialize : MonoBehaviour {
         m_ARPlaneManager.planePrefab = null;
         Debug.Log("Removed AR Plane prefab!");
     }
-
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (spawnedObject == null)
+            instantiatePrefab(eventData);
+    }
 }

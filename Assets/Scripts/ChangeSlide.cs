@@ -61,7 +61,7 @@ void Start()
         PrevButton.onClick.AddListener(Prev);
         CloseButton.onClick.AddListener(toggleSlides);
         OpenButton.onClick.AddListener(toggleSlides);
-        
+        toggleSlides();
     }
 
     //Next slash right button
@@ -89,7 +89,7 @@ void Start()
         }
         assignText(slideNumber);
     }
-    void openSlides(int ID)
+    public void openSlides(int ID)
     {
         //Make sure we're on the right slide
         slideNumber = ID;
@@ -110,6 +110,7 @@ void Start()
             PrevButton.transform.Translate(openVector);
             CloseButton.transform.Translate(openVector);
             OpenButton.transform.Translate(-openVector); //Move other button off screen
+            slidesOpen = true;
         }
     }
     void closeSlides()

@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using System;
 
 
 /// <summary>
@@ -7,18 +8,23 @@ using UnityEngine;
 /// as delegate events. You can share Touch actions, Pinch actions so that they're executed 
 /// </summary>
 public class EventManager : MonoBehaviour {
-    public delegate void PinchAction(Touch touchZero, Touch touchOne);
-    public static event PinchAction OnPinched;
 
-    public delegate void SelectAction(Touch touch);
-    public static event SelectAction OnSelected;
+    // The line below is a shorthand for:
+    // public delegate void PinchAction(Touch touchZero, Touch touchOne);
+    // public static event PinchAction OnPinched;
+    public static event Action<Touch, Touch> OnPinched;
+    public static event Action<Touch> OnSelected;
+    public static event Action<Vector2> OnSelectMouse;
+
+    private void OnMouseDown() {
+        Debug.Log(Input.mousePosition);
+        
+    }
 
     private void Update() {
 
         if (OnPinched != null && Input.touchCount == 2){
-            
-            Debug.Log("Detected two touches!");
-
+            // Detect Dragging
             var touchOne = Input.GetTouch(1);
             var touchZero = Input.GetTouch(0);
 
@@ -26,20 +32,21 @@ public class EventManager : MonoBehaviour {
             var validZero = touchZero.phase == TouchPhase.Moved;
 
             if (validOne && validZero){
-                Debug.Log("Detected two valid touches!");
                 OnPinched(touchZero, touchOne);
             }
 
         }
-
-        if (OnSelected != null && Input.touchCount == 1){
-            Debug.Log("Detected one touch!");
+        else if (OnSelected != null && Input.touchCount == 1){
+            // Detect OnClick
             
             var touch = Input.GetTouch(0);
             if (touch.phase == TouchPhase.Began){
-                Debug.Log("Detected one valid touch!");
                 OnSelected(touch);
             }
+        }
+        if (OnSelectMouse != null && Input.GetMouseButtonDown(1)){
+            Debug.Log("Pressed primary button.");
+            OnSelectMouse(Input.mousePosition);
         }
     }
 }
