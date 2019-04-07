@@ -46,6 +46,8 @@ void Start()
         namesList = Resources.Load<TextAsset>(namePath) as TextAsset;
         locsList = Resources.Load<TextAsset>(locPath) as TextAsset;
         descrList = Resources.Load<TextAsset>(descrPath) as TextAsset;
+        Debug.Log(locsList);
+        Debug.Log(descrList);
         initArrays();
 
         assignText(slideNumber);
@@ -149,6 +151,8 @@ void Start()
         char[] charArray = { '\n' };
         nameArray = namesList.text.Split(charArray, 11);
         locArray = locsList.text.Split(charArray, 11);
+        Debug.Log("---------");
+        Debug.Log(descrList);
         descrArray = descrList.text.Split(charArray, 11);
     }
 }
