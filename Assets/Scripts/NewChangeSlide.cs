@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿/**
+ * using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -63,7 +64,8 @@ void Start()
         OpenButton.onClick.AddListener(toggleSlides);
         toggleSlides();
     }
-
+    **/
+    /**
     //Next slash right button
     void Next()
     {
@@ -77,6 +79,8 @@ void Start()
         assignText(slideNumber);
 
     }
+    **/
+    /**
     //Previous slash left button
     void Prev()
     {
@@ -158,3 +162,4 @@ void Start()
         descrArray = descrList.text.Split(charArray, 11);
     }
 }
+**/

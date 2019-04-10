@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.45083278, g: 0.49906564, b: 0.5656188, a: 1}
+  m_IndirectSpecularColor: {r: 0.45083255, g: 0.49906516, b: 0.5656182, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1732,7 +1732,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1973206312}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1ce1d081e70e6640a4266117d146260, type: 3}
+  m_Script: {fileID: 11500000, guid: 3570028b20c6bf628a99e707c6fc755c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   teleName: 
@@ -1776,7 +1776,7 @@ MonoBehaviour:
   imageArray:
   - {fileID: 21300000, guid: cb674a631414a2649b8325202292fa03, type: 3}
   - {fileID: 21300000, guid: 0ceebf154f51a9a449e51221756d730e, type: 3}
-  - {fileID: 21300000, guid: 0240b81a050d25a498f3b22774a64e64, type: 3}
+  - {fileID: 21300000, guid: 842c85b03717808449d75837d9682093, type: 3}
   - {fileID: 21300000, guid: 29e4067501a505e4c8110d053875fd95, type: 3}
   - {fileID: 21300000, guid: 78ea2fb5e22b14d46809197a0213b577, type: 3}
   - {fileID: 21300000, guid: 29dabb7976ec5534bad2e387c2bea7b9, type: 3}
@@ -1785,9 +1785,9 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 7b3633cf857bb37478a53f4263430548, type: 3}
   - {fileID: 21300000, guid: 0240b81a050d25a498f3b22774a64e64, type: 3}
   - {fileID: 21300000, guid: bb7e4f3b415b5204cb8af9ec77213a55, type: 3}
-  namePath: Assets/Resources/Names.txt
-  locPath: Assets/Resources/Locations.txt
-  descrPath: Assets/Resources/Locations.txt
+  namePath: 
+  locPath: 
+  descrPath: 
   slideNumber: 0
   totalSlides: 0
   slidesOpen: 0
@@ -1796,7 +1796,7 @@ MonoBehaviour:
   telescopeDescription: {fileID: 1614272505}
   telescopeImage: {fileID: 12496773}
   holoSlide: {fileID: 1132678463}
-  space1: {fileID: 21300000, guid: 5e91a41941b3f9e47bf74af780f88164, type: 3}
+  space1: {fileID: 0}
   space2: {fileID: 0}
   xSprite: {fileID: 21300000, guid: da58bad2e2a6fb04aa07f41c0eda24bf, type: 3}
   downSprite: {fileID: 21300000, guid: deb7777a62738d540aff6c55af32101b, type: 3}
@@ -1804,7 +1804,7 @@ MonoBehaviour:
   PrevButton: {fileID: 531524039}
   CloseButton: {fileID: 679674975}
   OpenButton: {fileID: 998004917}
-  transformVector: {x: 5000, y: 2300, z: 0}
+  transformVector: {x: 2092, y: 3524, z: 0}
   namesList: {fileID: 0}
   locsList: {fileID: 0}
   descrList: {fileID: 0}

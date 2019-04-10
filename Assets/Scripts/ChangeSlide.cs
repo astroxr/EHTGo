@@ -23,10 +23,7 @@ public class ChangeSlide : MonoBehaviour
     public Text telescopeDescription;
     public Image telescopeImage;
     public Image holoSlide;
-
-    public Sprite space1;
-    public Sprite space2;
-
+    
     public Sprite xSprite, downSprite;
     public Button NextButton, PrevButton, CloseButton, OpenButton;
 
@@ -73,6 +70,7 @@ void Start()
             slideNumber = 0;
         }
         assignText(slideNumber);
+        //Select new pin
 
     }
     //Previous slash left button
