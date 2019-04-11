@@ -25,13 +25,15 @@ public class ChangeSlide : MonoBehaviour
     public Image holoSlide;
     
     public Sprite xSprite, downSprite;
-    public Button NextButton, PrevButton, CloseButton, OpenButton;
+    public Button NextButton, PrevButton, CloseButton, OpenButton, ResetEarth;
 
     public Vector3 transformVector = new Vector3(4 * Screen.width, 4 * Screen.height, 0);
 
     public TextAsset namesList;
     public TextAsset locsList;
     public TextAsset descrList;
+    GameObject Earth_object;
+
 
 // Start is called before the first frame update
 void Start()
@@ -58,6 +60,7 @@ void Start()
         PrevButton.onClick.AddListener(Prev);
         CloseButton.onClick.AddListener(toggleSlides);
         OpenButton.onClick.AddListener(toggleSlides);
+        ResetEarth.onClick.AddListener(Reset_Earth);
         toggleSlides();
     }
 
@@ -107,6 +110,7 @@ void Start()
             NextButton.transform.Translate(openVector);
             PrevButton.transform.Translate(openVector);
             CloseButton.transform.Translate(openVector);
+            ResetEarth.transform.Translate(openVector);
             OpenButton.transform.Translate(-openVector); //Move other button off screen
             slidesOpen = true;
         }
@@ -125,6 +129,7 @@ void Start()
         NextButton.transform.Translate(closeVector);
         PrevButton.transform.Translate(closeVector);
         CloseButton.transform.Translate(closeVector);
+        ResetEarth.transform.Translate(closeVector);
         OpenButton.transform.Translate(-closeVector); //Move other button onto screen
     } 
     void toggleSlides()
@@ -154,5 +159,16 @@ void Start()
         Debug.Log("---------");
         Debug.Log(descrList);
         descrArray = descrList.text.Split(charArray, 11);
+    }
+
+    private void Reset_Earth(){
+        Debug.Log("Resetting the earth rotation!");
+        Earth_object = GameObject.Find("Earth_small Variant");
+        if (Earth_object == null )
+        {
+            Debug.Log("Earth Not found");
+            return;
+        }
+        Earth_object.transform.eulerAngles = new Vector3(0,0,0);
     }
 }
