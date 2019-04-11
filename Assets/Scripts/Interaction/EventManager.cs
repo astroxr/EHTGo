@@ -16,11 +16,6 @@ public class EventManager : MonoBehaviour {
     public static event Action<Touch> OnSelected;
     public static event Action<Vector2> OnSelectMouse;
 
-    private void OnMouseDown() {
-        Debug.Log(Input.mousePosition);
-        
-    }
-
     private void Update() {
 
         if (OnPinched != null && Input.touchCount == 2){
@@ -44,7 +39,7 @@ public class EventManager : MonoBehaviour {
                 OnSelected(touch);
             }
         }
-        if (OnSelectMouse != null && Input.GetMouseButtonDown(1)){
+        if (OnSelectMouse != null && Input.GetMouseButtonDown(0)){
             Debug.Log("Pressed primary button.");
             OnSelectMouse(Input.mousePosition);
         }
