@@ -6,8 +6,6 @@ using System.IO;
 
 public class ChangeSlide : MonoBehaviour
 {
-    public string teleName;
-    public string location;
     public string[] nameArray = new string[11];
     public string[] locArray = new string[11];
     public string[] descrArray = new string[11];
@@ -23,7 +21,7 @@ public class ChangeSlide : MonoBehaviour
     public Text telescopeDescription;
     public Image telescopeImage;
     public Image holoSlide;
-    
+
     public Sprite xSprite, downSprite;
     public Button NextButton, PrevButton, CloseButton, OpenButton, ResetEarth;
 
@@ -74,9 +72,8 @@ void Start()
         {
             slideNumber = 0;
         }
+        selectPin(slideNumber); //Select new pin
         assignText(slideNumber);
-        //Select new pin
-
     }
     //Previous slash left button
     void Prev()
@@ -88,6 +85,7 @@ void Start()
         {
             slideNumber--;
         }
+        selectPin(slideNumber); //Select new pin
         assignText(slideNumber);
     }
     public void openSlides(int ID)
@@ -95,6 +93,7 @@ void Start()
         //Make sure we're on the right slide
         slideNumber = ID;
         assignText(slideNumber);
+        selectPin(slideNumber); //Select new pin
 
         if (!slidesOpen) //Just in case you select a new pin while everything is open, so it doesn't drift off the screen
         {
@@ -156,9 +155,11 @@ void Start()
         char[] charArray = { '\n' };
         nameArray = namesList.text.Split(charArray, 11);
         locArray = locsList.text.Split(charArray, 11);
-        Debug.Log("---------");
-        Debug.Log(descrList);
         descrArray = descrList.text.Split(charArray, 11);
+    }
+    void selectPin(int ID)
+    {
+        GameObject.Find("Earth_small Variant").GetComponent<Load_TelescopeData>().SelectFromSlide(ID);   
     }
 
     private void Reset_Earth(){
@@ -166,7 +167,7 @@ void Start()
         Earth_object = GameObject.Find("Earth_small Variant");
         if (Earth_object == null )
         {
-            Debug.Log("Earth Not found");
+            Debug.Log("404: Earth Not found");
             return;
         }
         Earth_object.transform.eulerAngles = new Vector3(0,0,0);

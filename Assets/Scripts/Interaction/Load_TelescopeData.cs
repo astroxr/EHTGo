@@ -37,7 +37,7 @@ public class Load_TelescopeData : MonoBehaviour
 
 
     string[] Tel_Names = new[] { "PV", "SMT", "SMA", "LMT", "ALMA", "SPT", "APEX", "JCMT" };
-    int [] Array_locations = new [] {9 , 0, 5, 4, 6, 7, 1, 3};
+    int [] Array_locations = new [] {2 , 0, 5, 4, 6, 7, 1, 3};
     // Start is called before the first frame update
     void Start()
     {
@@ -111,6 +111,25 @@ public class Load_TelescopeData : MonoBehaviour
 
         }
         Debug.Log("Selected!");
+    }
+    public void SelectFromSlide(int ID) //So we don't have two functions calling each other forever more
+    {
+        int[] pinMap = { 1, 6, 0, 7, 3, 2, 4, 5 }; //Because the pin and slide lists are in different orders
+
+        foreach (GameObject i in this.CurrentTelescopes)
+        {
+            i.GetComponent<Renderer>().material = Not_selected;
+        }
+        if (ID < 0 || ID > 7)
+        {
+            return;
+        }
+        else
+        {
+            int pinID = pinMap[ID];
+            CurrentTelescopes[pinID].GetComponent<Renderer>().material = Selected;
+        }
+
     }
 
     // Update is called once per frame

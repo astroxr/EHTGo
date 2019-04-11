@@ -16,10 +16,10 @@ public class TrackOnFloor : MonoBehaviour
 
 
     private void OnEnable() {
-        OnClick.onClick += OnTrackedClick;
+        //OnClick.onClick += OnTrackedClick;
     }    
     private void OnDisable() {
-        OnClick.onClick -= OnTrackedClick;
+        //OnClick.onClick -= OnTrackedClick;
     }
 
     public void OnTrackedClick(PointerEventData eventData)
