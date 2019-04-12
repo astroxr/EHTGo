@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Experimental.XR;
 using UnityEngine.XR.ARFoundation;
 
+[RequireComponent(typeof(Load_TelescopeData))]
 public class PinchSelect : MonoBehaviour
 {
     /// <summary>
@@ -16,11 +17,18 @@ public class PinchSelect : MonoBehaviour
     public float orthoZoomSpeed = 1f;
     ARSessionOrigin m_SessionOrigin;
     private GameObject earthObj;
+    private Load_TelescopeData LoadTelescope;
+    private PinScript pinScript;
+    
 
     void Awake()
     {
         m_SessionOrigin = FindObjectOfType<ARSessionOrigin>();
 
+    }
+
+    private void Start() {
+        LoadTelescope = GetComponent<Load_TelescopeData>();
     }
 
     private void OnEnable() {
@@ -49,14 +57,10 @@ public class PinchSelect : MonoBehaviour
         {
             if (vHit.transform.tag == "TelescopePin")
             {
-                // GameObject Telescope_Container = GameObject.FindWithTag("Earth");
-                // GameObject Telescope_Container = GameObject.Find("Earth_NewModel2");
-                Load_TelescopeData script = GetComponent<Load_TelescopeData>();
-
                 GameObject Selected_Telescope = vHit.transform.gameObject;
-                PinScript script_2 = Selected_Telescope.GetComponent<PinScript>();
+                pinScript = Selected_Telescope.GetComponent<PinScript>();
 
-                script.Select_Telescope(script_2.ID);
+                LoadTelescope.Select_Telescope(pinScript.ID);
             }
         }
     }
@@ -75,14 +79,10 @@ public class PinchSelect : MonoBehaviour
         {
             if (vHit.transform.tag == "TelescopePin")
             {
-                // GameObject Telescope_Container = GameObject.FindWithTag("Earth");
-                // GameObject Telescope_Container = GameObject.Find("Earth_NewModel2");
-                Load_TelescopeData script = GetComponent<Load_TelescopeData>();
-
                 GameObject Selected_Telescope = vHit.transform.gameObject;
-                PinScript script_2 = Selected_Telescope.GetComponent<PinScript>();
+                pinScript = Selected_Telescope.GetComponent<PinScript>();
 
-                script.Select_Telescope(script_2.ID);
+                LoadTelescope.Select_Telescope(pinScript.ID);
             }
         }
     }

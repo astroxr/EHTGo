@@ -1,15 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using System.IO;
+﻿using UnityEngine;
 
 public class Load_TelescopeData : MonoBehaviour
 {
 
     //public Transform Telescope_Prefab;
     public float distance;
-    public float scale_;
-
     public GameObject Pin_object;
     GameObject[] CurrentTelescopes;
 
@@ -37,60 +32,37 @@ public class Load_TelescopeData : MonoBehaviour
 
 
     string[] Tel_Names = new[] { "PV", "SMT", "SMA", "LMT", "ALMA", "SPT", "APEX", "JCMT" };
-    int [] Array_locations = new [] {2 , 0, 5, 4, 6, 7, 1, 3};
+    int [] slideMap = new [] {2 , 0, 5, 4, 6, 7, 1, 3};
     // Start is called before the first frame update
     void Start()
     {
         
-        //StreamReader inp_stm = new StreamReader(".\\Assets\\Earth\\Materials\\Materials\\Telescope_Coordinates\\Data.txt");
         Transform TelescopeContainer = transform.Find("TelescopePinContainer");
-        //while (!inp_stm.EndOfStream)
-        int array_index = 0;
-        int NumberofPins = 8;
+        int NumberofPins = positionArray.Length;
         CurrentTelescopes = new GameObject[NumberofPins];
-        while (array_index <= NumberofPins - 1)
+    
+        for (int i = 0; i < NumberofPins; i++)
         {
-            //string inp_ln = inp_stm.ReadLine();
-            //string[] splited = inp_ln.Split(' ');
-
-
-            //float x = float.Parse(splited[1]);
-            //float y = float.Parse(splited[2]);
-            // float z = float.Parse(splited[3]);
-            float x = positionArray[array_index].x;
-            float y = positionArray[array_index].y;
-            float z = positionArray[array_index].z;
-            Vector3 Telescope_pin_location = new Vector3(x, z, y);
-            Telescope_pin_location = Telescope_pin_location.normalized*distance;
-
-            //Instantiate(Telescope_Prefab, Telescope_pin_location, new Quaternion(0, 0, 0, 0),);
-            GameObject sphere = Instantiate(Pin_object, new Vector3(0, 0, 0), Quaternion.identity);
-            //GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-            sphere.layer = LayerMask.NameToLayer("TelescopePins"); // Telescope Pins layer is 9
-            sphere.transform.parent = TelescopeContainer;
-            sphere.transform.localPosition = Telescope_pin_location;
-            PinScript p  =  sphere.AddComponent<PinScript>();
-            BoxCollider sc = sphere.AddComponent<BoxCollider>();
+            float x = positionArray[i].x;
+            float y = positionArray[i].y;
+            float z = positionArray[i].z;
+            Vector3 Telescope_pin_location = new Vector3(x, z, y).normalized * distance;
+            GameObject pinObject = Instantiate(Pin_object, new Vector3(0, 0, 0), Quaternion.identity);
+            pinObject.layer = LayerMask.NameToLayer("TelescopePins"); // Telescope Pins layer is 9
+            pinObject.transform.parent = TelescopeContainer;
+            pinObject.transform.localPosition = Telescope_pin_location;
+            PinScript pinScript  =  pinObject.AddComponent<PinScript>();
             
-            p.ID = array_index;
-            sphere.transform.tag = "TelescopePin";
+            pinScript.ID = i;
+            pinObject.transform.tag = "TelescopePin";
 
+            pinObject.transform.Rotate(rotationArray[i], Space.Self);
 
-            //Vector3 normalVector = sphere.transform.localPosition;
-            //float size = normalVector.magnitude;
-
-            sphere.transform.Rotate(rotationArray[array_index], Space.Self);
-
-            //sphere.transform.localScale = new Vector3(1, 1, 1) * scale_;
-            //sphere.name = splited[0];
-            sphere.name = Tel_Names[array_index];
-            CurrentTelescopes[array_index] = sphere;
-            array_index++;
+            pinObject.name = Tel_Names[i];
+            CurrentTelescopes[i] = pinObject;
+            
         }
-
-        this.Select_Telescope(-1);
-        //inp_stm.Close();
-
+        Select_Telescope(-1);
     }
 
     public void Select_Telescope (int ID)
@@ -107,7 +79,7 @@ public class Load_TelescopeData : MonoBehaviour
         {
 
             CurrentTelescopes[ID].GetComponent<Renderer>().material = Selected;
-            GameObject.Find("Canvas").GetComponent<ChangeSlide>().openSlides(Array_locations[ID]);
+            GameObject.Find("Canvas").GetComponent<ChangeSlide>().openSlides(slideMap[ID]);
 
         }
         Debug.Log("Selected!");
@@ -130,11 +102,5 @@ public class Load_TelescopeData : MonoBehaviour
             CurrentTelescopes[pinID].GetComponent<Renderer>().material = Selected;
         }
 
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

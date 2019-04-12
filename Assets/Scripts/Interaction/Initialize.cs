@@ -5,18 +5,23 @@ using UnityEngine.XR.ARFoundation;
 using UnityEngine.EventSystems;
 using System;
 
-
+/// <summary>
+/// This class will initialize the application.
+/// </summary>
 [RequireComponent(typeof(ARSessionOrigin))]
 [RequireComponent(typeof(ARPlaneManager))]
+[RequireComponent(typeof(PlaneDetectionController))]
 public class Initialize : MonoBehaviour, IPointerClickHandler {
     [SerializeField]
     [Tooltip("Instantiates this prefab on a plane at the touch location.")]
     GameObject m_PlacedPrefab;
     [SerializeField]
     [Tooltip("Scale used to start up the application. This will affect the size of objects")]
-    public float startingScale;
+    public float startingScale = 10;
     ARSessionOrigin m_SessionOrigin;
     ARPlaneManager m_ARPlaneManager;
+    GameObject planeVisualizer;
+    PlaneDetectionController m_planeDetection;
     /// <summary>
     /// The prefab to instantiate on touch.
     /// </summary>
@@ -32,13 +37,15 @@ public class Initialize : MonoBehaviour, IPointerClickHandler {
     static List<ARRaycastHit> s_Hits = new List<ARRaycastHit>();
     static List<ARPlane> allPlanes = new List<ARPlane>();
 
-    void Awake()
-    {   
+    private void Start() {
         m_SessionOrigin = GetComponent<ARSessionOrigin>();
         m_ARPlaneManager = GetComponent<ARPlaneManager>();
-    }
-    private void Start() {
-        startingScale = 10f;
+        m_planeDetection = GetComponent<PlaneDetectionController>();
+
+        // save reference to plane visualizer
+        planeVisualizer = m_ARPlaneManager.planePrefab;
+
+        // Scale ARSessionOrigin according to starting scale
         transform.localScale = new Vector3(startingScale, startingScale, startingScale);
     }
 
@@ -47,40 +54,14 @@ public class Initialize : MonoBehaviour, IPointerClickHandler {
         if (m_SessionOrigin.Raycast(Input.GetTouch(0).position, s_Hits, TrackableType.Planes)){
             var hit = s_Hits[0];
             spawnedObject = Instantiate(m_PlacedPrefab);
-            // Position at one meter above the ground.
+            
+            // Position at one unit (meter/scale applied) above the ground.
             var offset = startingScale * Vector3.up;
             m_SessionOrigin.MakeContentAppearAt(spawnedObject.transform, hit.pose.position + offset, hit.pose.rotation);
-            SetAllPlanesActive(false);
+            m_planeDetection.SetAllPlanesActive(false);
         }
     }
     
-    /// <summary>
-    /// Toggles plane detection and the visualization of the planes.
-    /// </summary>
-    public void TogglePlaneDetection()
-    {
-        m_ARPlaneManager.enabled = !m_ARPlaneManager.enabled;
-
-        if (m_ARPlaneManager.enabled)
-            SetAllPlanesActive(true);
-        else
-            SetAllPlanesActive(false);
-    }
-
-    /// <summary>
-    /// Iterates over all the existing planes and activates
-    /// or deactivates their <c>GameObject</c>s'.
-    /// </summary>
-    /// <param name="value">Each planes' GameObject is SetActive with this value.</param>
-    void SetAllPlanesActive(bool value)
-    {
-        m_ARPlaneManager.GetAllPlanes(allPlanes);
-        foreach (var plane in allPlanes)
-            plane.gameObject.SetActive(value);
-
-        m_ARPlaneManager.planePrefab = null;
-        Debug.Log("Removed AR Plane prefab!");
-    }
     public void OnPointerClick(PointerEventData eventData)
     {
         if (spawnedObject == null)
