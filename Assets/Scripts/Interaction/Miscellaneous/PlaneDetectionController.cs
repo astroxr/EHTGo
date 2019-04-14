@@ -39,11 +39,23 @@ public class PlaneDetectionController : MonoBehaviour
             plane.gameObject.SetActive(value);
     }
 
+    public void RemoveVisualizer()
+    {
+        m_ARPlaneManager.planePrefab = null;
+    }
+
+    public void RestoreVisualizer()
+    {
+        m_ARPlaneManager.planePrefab = planePrefab;
+    }
+
     void Awake()
     {
         m_ARPlaneManager = GetComponent<ARPlaneManager>();
+        planePrefab = m_ARPlaneManager.planePrefab;
     }
 
+    private GameObject planePrefab;
     ARPlaneManager m_ARPlaneManager;
 
     static List<ARPlane> s_Planes = new List<ARPlane>();
