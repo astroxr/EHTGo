@@ -29,8 +29,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a467c9039cda9a48a6dd2f13773ca5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  perspectiveZoomSpeed: 3
-  orthoZoomSpeed: 3
+  perspectiveZoomSpeed: 1
+  orthoZoomSpeed: 1
 --- !u!135 &2350375923553489900
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -56,26 +56,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Earth_small Variant
       objectReference: {fileID: 0}
-    - target: {fileID: 2961624728339650053, guid: 653b938dba72d599e98eda61365f1037,
-        type: 3}
-      propertyPath: Telescope_Prefab
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 2961624728339650053, guid: 653b938dba72d599e98eda61365f1037,
-        type: 3}
-      propertyPath: distance
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2961624728339650053, guid: 653b938dba72d599e98eda61365f1037,
-        type: 3}
-      propertyPath: scale_
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2961624728339650053, guid: 653b938dba72d599e98eda61365f1037,
-        type: 3}
-      propertyPath: Pin_object
-      value: 
-      objectReference: {fileID: 100000, guid: de5c16fbed34db8bbb805876254ab61d, type: 3}
     - target: {fileID: 2961624728339650055, guid: 653b938dba72d599e98eda61365f1037,
         type: 3}
       propertyPath: m_Enabled
@@ -156,16 +136,6 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 2961624728339650052, guid: 653b938dba72d599e98eda61365f1037,
-        type: 3}
-      propertyPath: m_Layer
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 2961624728339650052, guid: 653b938dba72d599e98eda61365f1037,
-        type: 3}
-      propertyPath: m_TagString
-      value: EarthCollider
-      objectReference: {fileID: 0}
     - target: {fileID: 2961624728339810852, guid: 653b938dba72d599e98eda61365f1037,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -226,6 +196,16 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2961624728339650052, guid: 653b938dba72d599e98eda61365f1037,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 2961624728339650052, guid: 653b938dba72d599e98eda61365f1037,
+        type: 3}
+      propertyPath: m_TagString
+      value: EarthCollider
+      objectReference: {fileID: 0}
     - target: {fileID: 2961624728339650298, guid: 653b938dba72d599e98eda61365f1037,
         type: 3}
       propertyPath: m_Enabled
@@ -266,6 +246,26 @@ PrefabInstance:
       propertyPath: m_Size.z
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 2961624728339650053, guid: 653b938dba72d599e98eda61365f1037,
+        type: 3}
+      propertyPath: Telescope_Prefab
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2961624728339650053, guid: 653b938dba72d599e98eda61365f1037,
+        type: 3}
+      propertyPath: distance
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2961624728339650053, guid: 653b938dba72d599e98eda61365f1037,
+        type: 3}
+      propertyPath: scale_
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2961624728339650053, guid: 653b938dba72d599e98eda61365f1037,
+        type: 3}
+      propertyPath: Pin_object
+      value: 
+      objectReference: {fileID: 100000, guid: de5c16fbed34db8bbb805876254ab61d, type: 3}
     m_RemovedComponents:
     - {fileID: 2961624728339650299, guid: 653b938dba72d599e98eda61365f1037, type: 3}
     - {fileID: 2961624728339650053, guid: 653b938dba72d599e98eda61365f1037, type: 3}

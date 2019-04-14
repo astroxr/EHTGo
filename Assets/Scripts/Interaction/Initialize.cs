@@ -3,7 +3,6 @@ using UnityEngine;
 using UnityEngine.Experimental.XR;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.EventSystems;
-using System;
 
 /// <summary>
 /// This class will initialize the application.
@@ -14,7 +13,7 @@ using System;
 public class Initialize : MonoBehaviour, IPointerClickHandler {
     [SerializeField]
     [Tooltip("Instantiates this prefab on a plane at the touch location.")]
-    GameObject m_PlacedPrefab;
+    GameObject earthPrefab;
     [SerializeField]
     [Tooltip("Scale used to start up the application. This will affect the size of objects")]
     public float startingScale = 10;
@@ -25,10 +24,10 @@ public class Initialize : MonoBehaviour, IPointerClickHandler {
     /// <summary>
     /// The prefab to instantiate on touch.
     /// </summary>
-    public GameObject placedPrefab
+    public GameObject EarthPrefab
     {
-        get { return m_PlacedPrefab; }
-        set { m_PlacedPrefab = value; }
+        get { return earthPrefab; }
+        set { earthPrefab = value; }
     }
     /// <summary>
     /// The object instantiated as a result of a successful raycast intersection with a plane.
@@ -36,6 +35,7 @@ public class Initialize : MonoBehaviour, IPointerClickHandler {
     public GameObject spawnedObject { get; private set; }
     static List<ARRaycastHit> s_Hits = new List<ARRaycastHit>();
     static List<ARPlane> allPlanes = new List<ARPlane>();
+    private TerrainController terrainController;
 
     private void Start() {
         m_SessionOrigin = GetComponent<ARSessionOrigin>();
@@ -47,24 +47,39 @@ public class Initialize : MonoBehaviour, IPointerClickHandler {
 
         // Scale ARSessionOrigin according to starting scale
         transform.localScale = new Vector3(startingScale, startingScale, startingScale);
+
+        // Disable TerrainController
+        terrainController = GameObject.FindObjectOfType<TerrainController>();
+        if (terrainController != null)
+        {
+            terrainController.enabled = false;
+        }
     }
 
-    private void instantiatePrefab(PointerEventData eventData){
+    private void instantiateEarth(PointerEventData eventData){
         
         if (m_SessionOrigin.Raycast(Input.GetTouch(0).position, s_Hits, TrackableType.Planes)){
             var hit = s_Hits[0];
-            spawnedObject = Instantiate(m_PlacedPrefab);
+            spawnedObject = Instantiate(earthPrefab);
             
             // Position at one unit (meter/scale applied) above the ground.
             var offset = startingScale * Vector3.up;
+            // spawnedObject.transform.SetPositionAndRotation(hit.pose.position + offset, hit.pose.rotation);
             m_SessionOrigin.MakeContentAppearAt(spawnedObject.transform, hit.pose.position + offset, hit.pose.rotation);
             m_planeDetection.SetAllPlanesActive(false);
+            m_planeDetection.RemoveVisualizer();
+
+            // Reactivate terrainController
+            if (terrainController != null)
+            {
+                terrainController.enabled = true;
+            }
         }
     }
     
     public void OnPointerClick(PointerEventData eventData)
     {
         if (spawnedObject == null)
-            instantiatePrefab(eventData);
+            instantiateEarth(eventData);
     }
 }
