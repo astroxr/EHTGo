@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
+using System;
 
 public class ChangeSlide : MonoBehaviour
 {
@@ -23,7 +24,7 @@ public class ChangeSlide : MonoBehaviour
     public Image holoSlide;
 
     public Sprite xSprite, downSprite;
-    public Button NextButton, PrevButton, CloseButton, OpenButton, ResetEarth;
+    public Button NextButton, PrevButton, CloseButton, OpenButton, ResetEarth, ToggleTerrain;
 
     public Vector3 transformVector = new Vector3(4 * Screen.width, 4 * Screen.height, 0);
 
@@ -31,6 +32,7 @@ public class ChangeSlide : MonoBehaviour
     public TextAsset locsList;
     public TextAsset descrList;
     GameObject Earth_object;
+    public static event Action<int> toggleTerrainAction = delegate {};
 
 
 // Start is called before the first frame update
@@ -59,6 +61,11 @@ void Start()
         CloseButton.onClick.AddListener(toggleSlides);
         OpenButton.onClick.AddListener(toggleSlides);
         ResetEarth.onClick.AddListener(Reset_Earth);
+        ToggleTerrain.onClick.AddListener(() => 
+        { 
+            toggleTerrainAction(slideNumber); // Use lambda function to use slideNumber as parameter.
+        });
+        
         toggleSlides();
     }
 
@@ -110,6 +117,7 @@ void Start()
             PrevButton.transform.Translate(openVector);
             CloseButton.transform.Translate(openVector);
             ResetEarth.transform.Translate(openVector);
+            ToggleTerrain.transform.Translate(openVector);
             OpenButton.transform.Translate(-openVector); //Move other button off screen
             slidesOpen = true;
         }
@@ -129,6 +137,7 @@ void Start()
         PrevButton.transform.Translate(closeVector);
         CloseButton.transform.Translate(closeVector);
         ResetEarth.transform.Translate(closeVector);
+        ToggleTerrain.transform.Translate(closeVector);
         OpenButton.transform.Translate(-closeVector); //Move other button onto screen
     } 
     void toggleSlides()
@@ -159,7 +168,11 @@ void Start()
     }
     void selectPin(int ID)
     {
-        GameObject.Find("Earth_small Variant").GetComponent<Load_TelescopeData>().SelectFromSlide(ID);   
+        var earth = GameObject.Find("Earth_small Variant");
+        if (earth != null)
+        {
+            earth.GetComponent<Load_TelescopeData>().SelectFromSlide(ID);
+        }
     }
 
     private void Reset_Earth(){
