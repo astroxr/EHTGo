@@ -1,46 +1,43 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Experimental.XR;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.EventSystems;
 
-public class TrackOnFloor : MonoBehaviour
+[RequireComponent(typeof(Renderer))]
+[RequireComponent(typeof(Collider))]
+public class TrackOnFloor : MonoBehaviour, IPointerClickHandler
 {
-    public GameObject trackingObj;
     private ARSessionOrigin arOrigin;
     private Pose placementPose;
     private bool placementPoseIsValid = false;
     private bool detectingPlacement = true;
-    private Renderer m_Renderer;
-
-
-    private void OnEnable() {
-        //OnClick.onClick += OnTrackedClick;
-    }    
-    private void OnDisable() {
-        //OnClick.onClick -= OnTrackedClick;
+    private Renderer objRenderer;
+    private Collider objCollider;
+    private static StandardShaderUtils.BlendMode OpaqueMode = StandardShaderUtils.BlendMode.Opaque;
+    private static StandardShaderUtils.BlendMode TransMode = StandardShaderUtils.BlendMode.Transparent;
+    public void Reset()
+    {
+        StandardShaderUtils.ChangeRenderMode(objRenderer.material, TransMode);   
+        placementPoseIsValid = false;
+        detectingPlacement = true;
     }
 
-    public void OnTrackedClick(PointerEventData eventData)
+    public void OnPointerClick(PointerEventData eventData)
     {
-        Debug.Log("Click detected on Object!");
         if (detectingPlacement && placementPoseIsValid){
-            Debug.Log("Placing object!");
-            m_Renderer.material.SetFloat("_Mode", 0);
-            var opaqueMode = StandardShaderUtils.BlendMode.Opaque;
-            StandardShaderUtils.ChangeRenderMode(m_Renderer.material, opaqueMode);
+            StandardShaderUtils.ChangeRenderMode(objRenderer.material, OpaqueMode);
             detectingPlacement = false;
         }
     }
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         arOrigin = FindObjectOfType<ARSessionOrigin>();
-        m_Renderer = trackingObj.GetComponent<Renderer>();
-        var fadeMode = StandardShaderUtils.BlendMode.Fade;
-        StandardShaderUtils.ChangeRenderMode(m_Renderer.material, fadeMode);
+        objRenderer = GetComponent<Renderer>();
+        objCollider = GetComponent<Collider>();
+        StandardShaderUtils.ChangeRenderMode(objRenderer.material, TransMode);
     }
 
     // Update is called once per frame
@@ -60,26 +57,32 @@ public class TrackOnFloor : MonoBehaviour
         
         // Send Raycast and check if it hit any trackable
         placementPoseIsValid = arOrigin.Raycast(screenCenter, hits, TrackableType.Planes);
+        _SetVisibility(placementPoseIsValid);
         if (placementPoseIsValid){
-            Debug.Log("Placement is VALID!");
+            Debug.Log("Placing " + gameObject.name);
             // Use its pose to update the object's pose
             placementPose = hits[0].pose;
-
-            // Update pose to move with the camera's angle view
-            var cameraForward = Camera.main.transform.forward;
+            // update placement
+            
+            var cameraForward = Camera.current.transform.forward;
             var cameraBearing = new Vector3(cameraForward.x, 0, cameraForward.z).normalized;
             placementPose.rotation = Quaternion.LookRotation(cameraBearing);
 
-            // update placement
-            arOrigin.MakeContentAppearAt(trackingObj.transform, placementPose.position);
-            // arOrigin.MakeContentAppearAt(trackingObj.transform, placementPose.position, placementPose.rotation);
-            trackingObj.SetActive(true);
-            Debug.Log("Object is now active!");
+            gameObject.transform.SetPositionAndRotation(placementPose.position, placementPose.rotation);
         }
         else
         {
-            trackingObj.SetActive(false);
             Debug.Log("Placement is INVALID!: Object is now inactive.");
         }
+    }
+
+    /// <summary>
+    /// Make object invisible
+    /// </summary>
+    /// <param name="visible"> whether you want it visible</param>
+    private void _SetVisibility(bool visible)
+    {
+        objRenderer.enabled = visible;
+        objCollider.enabled = visible;
     }
 }
