@@ -7,10 +7,10 @@ using System;
 
 public class ChangeSlide : MonoBehaviour
 {
-    public string[] nameArray = new string[11];
-    public string[] locArray = new string[11];
-    public string[] descrArray = new string[11];
-    public Sprite[] imageArray = new Sprite[11];
+    public string[] nameArray = new string[8];
+    public string[] locArray = new string[8];
+    public string[] descrArray = new string[8];
+    public Sprite[] imageArray = new Sprite[8];
     public string namePath;
     public string locPath;
     public string descrPath;
@@ -39,7 +39,7 @@ public class ChangeSlide : MonoBehaviour
 void Start()
     {
         slidesOpen = true;
-        totalSlides = 11;
+        totalSlides = 8;
         slideNumber = 0;
 
         namePath = "Names";
@@ -162,9 +162,9 @@ void Start()
     void initArrays()
     {
         char[] charArray = { '\n' };
-        nameArray = namesList.text.Split(charArray, 11);
-        locArray = locsList.text.Split(charArray, 11);
-        descrArray = descrList.text.Split(charArray, 11);
+        nameArray = namesList.text.Split(charArray, 8);
+        locArray = locsList.text.Split(charArray, 8);
+        descrArray = descrList.text.Split(charArray, 8);
     }
     void selectPin(int ID)
     {
