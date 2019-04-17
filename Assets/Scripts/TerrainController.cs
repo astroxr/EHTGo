@@ -59,8 +59,10 @@ public class TerrainController : MonoBehaviour {
 
     }
 
-    // MtGraham, Atacama, IRAM 30m, Mauna Kea, Sierra, SPT
-    private int[] slideMap = {0, 1, 2, 3, 4, 3, 1, 5, 5, 5, 5};
+    // ELEMENTS:        0         1        2           3       4      5       6
+    // TERRAINLIST: MtGraham, Atacama, IRAM 30m, Mauna Kea, Sierra, SPT
+    // SLIDELIST:   MtGraham, Atacama, IRAM 30m, Mauna Kea, Sierra, Atacama, SPT
+    private int[] slideMap = { 0, 1, 2, 3, 4, 3, 1, 5 };
 
     /// <summary>
     /// Overly advanced toggle function for the terrain floor tracking
