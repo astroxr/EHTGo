@@ -65,26 +65,26 @@ public class Load_TelescopeData : MonoBehaviour
         Select_Telescope(-1);
     }
 
-    public void Select_Telescope (int ID)
+    public void Select_Telescope (int pinID)
     {
         foreach (GameObject i in this.CurrentTelescopes)
         {
             i.GetComponent<Renderer>().material = Not_selected;
         }
-        if (ID < 0)
+        if (pinID < 0)
         {
             return;
         }
         else
         {
 
-            CurrentTelescopes[ID].GetComponent<Renderer>().material = Selected;
-            GameObject.Find("Canvas").GetComponent<ChangeSlide>().openSlides(slideMap[ID]);
+            CurrentTelescopes[pinID].GetComponent<Renderer>().material = Selected;
+            GameObject.Find("Canvas").GetComponent<ChangeSlide>().openSlides(slideMap[pinID]);
 
         }
         Debug.Log("Selected!");
     }
-    public void SelectFromSlide(int ID) //So we don't have two functions calling each other forever more
+    public void SelectFromSlide(int slideID) //So we don't have two functions calling each other forever more
     {
         int[] pinMap = { 1, 6, 0, 7, 3, 2, 4, 5 }; //Because the pin and slide lists are in different orders
 
@@ -92,13 +92,13 @@ public class Load_TelescopeData : MonoBehaviour
         {
             i.GetComponent<Renderer>().material = Not_selected;
         }
-        if (ID < 0 || ID > 7)
+        if (slideID < 0 || slideID > 7)
         {
             return;
         }
         else
         {
-            int pinID = pinMap[ID];
+            int pinID = pinMap[slideID];
             CurrentTelescopes[pinID].GetComponent<Renderer>().material = Selected;
         }
 

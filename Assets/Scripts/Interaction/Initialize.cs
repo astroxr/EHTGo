@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.Experimental.XR;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.EventSystems;
+using System;
 
 /// <summary>
 /// This class will initialize the application.
@@ -22,20 +23,13 @@ public class Initialize : MonoBehaviour, IPointerClickHandler {
     GameObject planeVisualizer;
     PlaneDetectionController m_planeDetection;
     /// <summary>
-    /// The prefab to instantiate on touch.
+    /// The earth object instantiated as a result of a successful raycast intersection with a plane.
     /// </summary>
-    public GameObject EarthPrefab
-    {
-        get { return earthPrefab; }
-        set { earthPrefab = value; }
-    }
-    /// <summary>
-    /// The object instantiated as a result of a successful raycast intersection with a plane.
-    /// </summary>
-    public GameObject spawnedObject { get; private set; }
+    static public GameObject spawnedEarth { get; private set; }
     static List<ARRaycastHit> s_Hits = new List<ARRaycastHit>();
     static List<ARPlane> allPlanes = new List<ARPlane>();
     private TerrainController terrainController;
+    public static event Action OnInitEnd = delegate { };
 
     private void Start() {
         m_SessionOrigin = GetComponent<ARSessionOrigin>();
@@ -60,12 +54,12 @@ public class Initialize : MonoBehaviour, IPointerClickHandler {
         
         if (m_SessionOrigin.Raycast(Input.GetTouch(0).position, s_Hits, TrackableType.Planes)){
             var hit = s_Hits[0];
-            spawnedObject = Instantiate(earthPrefab);
+            spawnedEarth = Instantiate(earthPrefab);
             
             // Position at one unit (meter/scale applied) above the ground.
             var offset = startingScale * Vector3.up;
             // spawnedObject.transform.SetPositionAndRotation(hit.pose.position + offset, hit.pose.rotation);
-            m_SessionOrigin.MakeContentAppearAt(spawnedObject.transform, hit.pose.position + offset, hit.pose.rotation);
+            m_SessionOrigin.MakeContentAppearAt(spawnedEarth.transform, hit.pose.position + offset, hit.pose.rotation);
             m_planeDetection.SetAllPlanesActive(false);
             m_planeDetection.RemoveVisualizer();
 
@@ -74,12 +68,14 @@ public class Initialize : MonoBehaviour, IPointerClickHandler {
             {
                 terrainController.enabled = true;
             }
+            // Execute any functions that subcribed to event
+            OnInitEnd();
         }
     }
     
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (spawnedObject == null)
+        if (spawnedEarth == null)
             instantiateEarth(eventData);
     }
 }

@@ -33,7 +33,16 @@ public class ChangeSlide : MonoBehaviour
     public TextAsset descrList;
     GameObject Earth_object;
     public static event Action<int> toggleTerrainAction = delegate {};
+    public static event Action<int> toggleTerrainOnChange = delegate {};
 
+
+private void OnEnable() {
+    Initialize.OnInitEnd += AssignEarth;
+}
+
+private void OnDisable() {
+    Initialize.OnInitEnd -= AssignEarth;
+}
 
 // Start is called before the first frame update
 void Start()
@@ -81,6 +90,7 @@ void Start()
         }
         selectPin(slideNumber); //Select new pin
         assignText(slideNumber);
+        toggleTerrainOnChange(slideNumber);
     }
     //Previous slash left button
     void Prev()
@@ -94,6 +104,7 @@ void Start()
         }
         selectPin(slideNumber); //Select new pin
         assignText(slideNumber);
+        toggleTerrainOnChange(slideNumber);
     }
     public void openSlides(int ID)
     {
@@ -168,21 +179,32 @@ void Start()
     }
     void selectPin(int ID)
     {
-        var earth = GameObject.Find("Earth_small Variant");
-        if (earth != null)
+        if (Earth_object != null)
         {
-            earth.GetComponent<Load_TelescopeData>().SelectFromSlide(ID);
+            Earth_object.GetComponent<Load_TelescopeData>().SelectFromSlide(ID);
+        }
+        else
+        {
+            Debug.Log("404: Earth Not found");
         }
     }
 
     private void Reset_Earth(){
         Debug.Log("Resetting the earth rotation!");
-        Earth_object = GameObject.Find("Earth_small Variant");
         if (Earth_object == null )
         {
             Debug.Log("404: Earth Not found");
             return;
         }
         Earth_object.transform.eulerAngles = new Vector3(0,0,0);
+    }
+
+    /// <summary>
+    /// This function is called once <see cref="Initialize"/> spawns the earth object in the scene.
+    /// </summary>
+    private void AssignEarth()
+    {
+        // assign spawned earth to earth_object
+        Earth_object = Initialize.spawnedEarth;
     }
 }
